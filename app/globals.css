@@ -220,6 +220,21 @@ h1 {
   font-size: 15px;
 }
 
+.slice-label-callout {
+  fill: rgba(245, 248, 255, 0.95);
+  font-size: 19px;
+  paint-order: stroke;
+  stroke: rgba(2, 7, 18, 0.72);
+  stroke-width: 5px;
+  stroke-linejoin: round;
+}
+
+.slice-callout-line {
+  stroke: rgba(225, 238, 255, 0.34);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
 .chart-core {
   fill: rgba(3, 9, 19, 0.84);
   stroke: rgba(210, 234, 255, 0.2);
@@ -321,7 +336,7 @@ h1 {
 }
 
 .editor-drawer {
-  width: min(48rem, 100vw);
+  width: min(62rem, 100vw);
   height: 100%;
   overflow: auto;
   border-radius: 1.4rem 0 0 1.4rem;
@@ -353,7 +368,14 @@ h1 {
 
 .editor-row {
   display: grid;
-  grid-template-columns: 1.2fr 0.9fr 0.65fr 0.8fr 1fr 0.65fr auto;
+  grid-template-columns:
+    minmax(8rem, 1.15fr)
+    minmax(7rem, 0.85fr)
+    minmax(4.5rem, 0.45fr)
+    minmax(6rem, 0.6fr)
+    minmax(8.8rem, 0.8fr)
+    minmax(4.5rem, 0.45fr)
+    auto;
   gap: 0.55rem;
   align-items: center;
   padding: 0.7rem;
