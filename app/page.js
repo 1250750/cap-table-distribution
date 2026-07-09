@@ -227,8 +227,14 @@ export default function Page() {
 
           {slices.map((slice) => {
             const mid = (slice.start + slice.end) / 2;
-            const labelPoint = polarToCartesian(360, 360, 230, mid);
-            const isSmall = slice.value < 3;
+            const isSmall = slice.value < 8;
+            const compactIndex = slices
+              .filter((candidate) => candidate.value < 8)
+              .findIndex((candidate) => candidate.entry.id === slice.entry.id);
+            const labelPoint = isSmall
+              ? { x: 194, y: 250 + compactIndex * 64 }
+              : polarToCartesian(360, 360, 230, mid);
+            const anchorPoint = polarToCartesian(360, 360, 292, mid);
             const isPool = slice.entry.type === "pool";
             const path = sectorPath(360, 360, 285, 128, slice.start, slice.end);
             const vested = vestedAmount(slice.entry);
@@ -236,24 +242,33 @@ export default function Page() {
             return (
               <g className={`slice ${isPool ? "slice-pool" : ""}`} key={slice.entry.id}>
                 <path d={path} fill={slice.color} filter="url(#glow)" />
+                {isSmall ? (
+                  <line
+                    className="slice-callout-line"
+                    x1={anchorPoint.x}
+                    y1={anchorPoint.y}
+                    x2={labelPoint.x + 18}
+                    y2={labelPoint.y + 6}
+                  />
+                ) : null}
                 <text
-                  className={`slice-label ${isSmall ? "slice-label-small" : ""}`}
+                  className={`slice-label ${isSmall ? "slice-label-callout" : ""}`}
                   x={labelPoint.x}
                   y={labelPoint.y - 7}
-                  textAnchor="middle"
+                  textAnchor={isSmall ? "end" : "middle"}
                 >
                   {slice.entry.name}
                 </text>
                 <text
-                  className={`slice-value ${isSmall ? "slice-label-small" : ""}`}
+                  className={`slice-value ${isSmall ? "slice-label-callout" : ""}`}
                   x={labelPoint.x}
                   y={labelPoint.y + 24}
-                  textAnchor="middle"
+                  textAnchor={isSmall ? "end" : "middle"}
                 >
                   {formatPercent(slice.value)}
                 </text>
                 {slice.entry.vesting && slice.entry.type !== "pool" ? (
-                  <text className="slice-vesting" x={labelPoint.x} y={labelPoint.y + 49} textAnchor="middle">
+                  <text className="slice-vesting" x={labelPoint.x} y={labelPoint.y + 49} textAnchor={isSmall ? "end" : "middle"}>
                     {formatPercent(vested)} vested
                   </text>
                 ) : null}
